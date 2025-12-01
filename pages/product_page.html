@@ -1,0 +1,365 @@
+<div id="anyshake-content">
+        <div class="converted_description">
+            <style>
+                /* container */
+                :root {
+                    --space-between-columns: 50px;
+                    --space-between-rows: 30px;
+                    --media-border-radius: 8px;
+                }
+
+                #anyshake-content {
+                    max-width: 60%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: var(--space-between-rows);
+                }
+
+                p {
+                    text-align: left;
+                }
+
+                /* each row: fixed image column, flexible argument column */
+                .sale-argument {
+                    display: flex;
+                    gap: var(--space-between-columns)
+                }
+
+                /* image styling — constrained to the fixed column */
+                .sale-argument img,
+                .sale-argument video {
+                    width: 100%;
+                    max-width: 320px;
+                    border-radius: var(--media-border-radius);
+                }
+
+                /* argument column */
+                .argument {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    width: 100%;
+                }
+
+                .video-container {
+                    position: relative;
+                    width: 100%;
+                    max-width: 320px;
+                }
+
+                .swappable-video {
+                    width: 100%;
+                    border-radius: var(--media-border-radius);
+                    display: block;
+                }
+
+                .swappable-video.hidden {
+                    display: none;
+                }
+
+                .sale-argument:has(#mirror-checkbox:checked) #video-no-mirror {
+                    display: none;
+                }
+
+                .sale-argument:has(#mirror-checkbox:checked) #video-with-mirror {
+                    display: block;
+                }
+
+                /* FAQ container: take full width inside #anyshake-content */
+                #anyshake-content details {
+                    width: 100%;
+                }
+
+                /* Main FAQ block */
+                /* FAQ container: take full width but keep all content inside the main block */
+                #anyshake-content>details {
+                    width: 100%;
+                    border-radius: 8px;
+                    padding: 15px 20px;
+                    box-sizing: border-box;
+                    border: 1px solid #ddd;
+                }
+
+                /* --- TOP-LEVEL SUMMARY --- */
+                #anyshake-content>details>summary {
+                    cursor: pointer;
+                    list-style: none;
+                    position: relative;
+                    padding-left: 30px;
+                }
+
+                #anyshake-content>details>summary h3 {
+                    margin: 0;
+                }
+
+                #anyshake-content>details>details p {
+                    margin: 0;
+                }
+
+                #anyshake-content>details>summary::-webkit-details-marker {
+                    display: none;
+                }
+
+                /* CARROT SVG ON THE LEFT */
+                #anyshake-content>details>summary::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 20px;
+                    height: 20px;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    transition: transform 0.25s ease;
+                }
+
+                #anyshake-content>details[open]>summary::before {
+                    transform: translateY(-50%) rotate(90deg);
+                }
+
+                /* --- INNER QUESTIONS --- */
+                #anyshake-content details details {
+                    /* margin-top: 15px; */
+                    margin-left: 15px;
+                    margin-right: 15px;
+                    border-radius: 6px;
+                    overflow: hidden;
+                }
+
+                /* Inner summary */
+                #anyshake-content details details>summary {
+                    cursor: pointer;
+                    padding: 10px 0 10px 24px;
+                    list-style: none;
+                    position: relative;
+                }
+
+                #anyshake-content details details>summary::-webkit-details-marker {
+                    display: none;
+                }
+
+                /* CARROT LEFT FOR INNER QUESTIONS */
+                #anyshake-content details details>summary::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 20px;
+                    height: 20px;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpolyline points='9 18 15 12 9 6'%3E%3C/polyline%3E%3C/svg%3E");
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    transition: transform 0.25s ease;
+                }
+
+                #anyshake-content details details[open]>summary::before {
+                    transform: translateY(-50%) rotate(90deg);
+                }
+
+                /* --- SMOOTH OPENING ANIMATION --- */
+                #anyshake-content details details>p {
+                    margin: 0;
+                    padding: 0 5px 10px 5px;
+                    line-height: 1.4em;
+
+                    max-height: 0;
+                    overflow: hidden;
+                    opacity: 0;
+                    transition: max-height 0.35s ease, opacity 0.35s ease;
+                }
+
+                #anyshake-content details details[open]>p {
+                    max-height: 200px;
+                    opacity: 1;
+                }
+
+                /* Tablet and smaller screens */
+                @media (max-width: 968px) {
+                    #anyshake-content {
+                        max-width: 80%;
+                    }
+
+                    :root {
+                        --space-between-columns: 30px;
+                    }
+                }
+
+                /* Mobile landscape and smaller */
+                @media (max-width: 768px) {
+                    #anyshake-content {
+                        max-width: 90%;
+                    }
+
+                    .sale-argument {
+                        flex-direction: column;
+                        align-items: center;
+                    }
+
+                    .sale-argument img {
+                        max-width: 100%;
+                        width: 100%;
+                    }
+
+                    iframe {
+                        width: 100%;
+                        height: auto;
+                        aspect-ratio: 16/9;
+                    }
+                }
+
+                /* Mobile portrait */
+                @media (max-width: 640px) {
+                    #anyshake-content {
+                        max-width: 95%;
+                    }
+
+                    :root {
+                        --space-between-columns: 20px;
+                        --space-between-rows: 20px;
+                    }
+
+                    .sale-argument {
+                        flex-direction: column;
+                        gap: 20px;
+                    }
+
+                    .sale-argument img {
+                        max-width: 100%;
+                    }
+
+                    .argument {
+                        max-height: none;
+                    }
+
+                    h3 {
+                        font-size: 1.3em;
+                    }
+
+                    h5 {
+                        font-size: 1em;
+                    }
+
+                    iframe {
+                        width: 100%;
+                        height: 200px;
+                    }
+                }
+
+                /* Very small mobile screens */
+                @media (max-width: 400px) {
+                    #anyshake-content {
+                        max-width: 100%;
+                        padding: 0 10px;
+                    }
+
+                    #anyshake-content>details {
+                        padding: 10px 15px;
+                    }
+
+                    #anyshake-content details details {
+                        margin-left: 5px;
+                        margin-right: 5px;
+                    }
+                }
+            </style>
+        </div>
+
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/FWZZ8_f0eKQ?si=uCupeDWeVglBHGj4?showinfo=0"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+        <p>
+            Any Shake is a camera shake effect that you can customise and animate to your needs. We created this tool for video editors with the goal of keeping it simple and efficient, so you can save time and get the result you need quickly.
+        </p>
+
+        <div class="sale-argument">
+            <img src="https://author.aescripts.com/elfinder/connector/media-gallery/AYMAS?_token=vGq5VLHEZsGXbAPJTnHU1EepkqhkP81aCdGkafSN&cmd=file&target=fls1_YW55bWF0ZXMvc2ltcGxlX2J5X2Rlc2lnbl92OC5wbmc" alt="Any Shake settings">
+            <div class="argument">
+                <h3>Simple by design</h3>
+                <p>No more dozens of presets that often don’t behave as expected. Any Shake is drag-and-drop and simple
+                    to configure.</p>
+            </div>
+        </div>
+
+        <div class="sale-argument">
+            <div class="argument">
+                <h3>Integrated features</h3>
+                <p>Any Shake includes motion blur and a mirror edges mode to hide black bars caused by the clip's movement.
+                </p>
+                <div>
+                    <input type="checkbox" name="mirror" id="mirror-checkbox">
+                    <label for="mirror-checkbox">Mirror Edges</label>
+                </div>
+            </div>
+            <div class="video-container">
+                <video id="video-no-mirror" class="swappable-video"
+                    src="https://author.aescripts.com/elfinder/connector/media-gallery/5YL3xspQHT?_token=p0c1gdovtgChtQPWStdeRMzFcmWj3Fknjwdub2c4&cmd=file&target=fls1_YW55bWF0ZXMvaW50ZWdyYXRlZF9mZWF0dXJlc18xLm1wNA"
+                    autoplay loop muted playsinline></video>
+                <video id="video-with-mirror" class="swappable-video hidden"
+                    src="https://author.aescripts.com/elfinder/connector/media-gallery/5YL3xspQHT?_token=p0c1gdovtgChtQPWStdeRMzFcmWj3Fknjwdub2c4&cmd=file&target=fls1_YW55bWF0ZXMvaW50ZWdyYXRlZF9mZWF0dXJlc18yX3YyLm1wNA"
+                    autoplay loop muted playsinline></video>
+            </div>
+        </div>
+
+
+        <div class="sale-argument">
+            <video
+                autoplay loop muted playsinline>
+                <source src="../static/assets/videos/seed_continuous.webm" type="video/webm">
+            </video>
+            <div class="argument">
+                <h3>One seed, seamless editing</h3>
+                <p>Using the same seed creates a continuous transition with no visible cut between clips.</p>
+            </div>
+        </div>
+
+        <p>We aim to keep improving this shake plugin and adding new features. Your feedback and suggestions are welcome
+            to help us in this process.</p>
+
+        <details>
+            <summary>
+                <h3>Known issues</h3>
+            </summary>
+
+            <details>
+                <summary>
+                    <p><b>Scale down in Motion creates cropping.</b></p>
+                </summary>
+
+                <p>To solve this issue, use a Transform effect before Any Shake to scale down your clip.</p>
+            </details>
+
+            <details>
+                <summary>
+                    <p><b>Scale up with a Transform effect before Any Shake shifts and crops your clip.</b></p>
+                </summary>
+
+                <p>To fix this, use the Motion scale parameter to scale up.</p>
+            </details>
+
+            <details>
+                <summary>
+                    <p><b>The Mirror Edges function may create small gaps at the edges.</b></p>
+                </summary>
+
+                <p>As the gaps are transparent, duplicating the clip, scaling it up slightly, and putting it bellow the
+                    original clip will hide the gaps.</p>
+            </details>
+
+            <details>
+                <summary>
+                    <p><b>When animating a parameters on Adjustment layer, the first keyframe is taken into account
+                        and the others are ignored.</b></p>
+                </summary>
+
+                <p>To fix this, use a nest to apply the effect to severals clips.</p>
+            </details>
+        </details>
+    </div>
